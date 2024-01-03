@@ -1,0 +1,5 @@
+#spring:
+#  docker:
+#    compose:
+#      enable: false
+#      file: compose.yaml
