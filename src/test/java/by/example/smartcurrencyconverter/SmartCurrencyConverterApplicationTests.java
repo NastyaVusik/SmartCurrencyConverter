@@ -1,10 +1,10 @@
-package by.example.currencyconverter;
+package by.example.smartcurrencyconverter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CurrencyConverterApplicationTests {
+class SmartCurrencyConverterApplicationTests {
 
     @Test
     void contextLoads() {

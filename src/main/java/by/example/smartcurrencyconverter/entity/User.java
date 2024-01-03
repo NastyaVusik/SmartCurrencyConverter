@@ -1,12 +1,10 @@
-package by.example.currencyconverter.entity;
+package by.example.smartcurrencyconverter.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Currency;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -48,7 +46,6 @@ public class User {
     @Column(name = "country", nullable = false)
     private Set<Country> country;
 
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -57,7 +54,6 @@ public class User {
     @Column(name = "joined_date", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private LocalDate joinedDate;
-
 
     @ManyToMany
     private Set<Currency> lovelyCurrency;

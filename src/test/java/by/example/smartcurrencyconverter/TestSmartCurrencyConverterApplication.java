@@ -1,4 +1,4 @@
-package by.example.currencyconverter;
+package by.example.smartcurrencyconverter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -8,7 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
-public class TestCurrencyConverterApplication {
+public class TestSmartCurrencyConverterApplication {
 
     @Bean
     @ServiceConnection
@@ -17,7 +17,7 @@ public class TestCurrencyConverterApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.from(CurrencyConverterApplication::main).with(TestCurrencyConverterApplication.class).run(args);
+        SpringApplication.from(SmartCurrencyConverterApplication::main).with(TestSmartCurrencyConverterApplication.class).run(args);
     }
 
 }
