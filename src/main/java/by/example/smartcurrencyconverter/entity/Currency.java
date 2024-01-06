@@ -33,7 +33,7 @@ public class Currency {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private LocalDate govBankRateDate;
 
-    @ManyToMany(mappedBy = "currency")
+    @ManyToMany
     private Set<Bank> banks;
 
     @Column(name = "best_rate", nullable = false)
