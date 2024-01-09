@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -56,6 +57,6 @@ public class User {
     private LocalDate joinedDate;
 
     @ManyToMany
-    private Set<Currency> lovelyCurrency;
+    private Map<Long, Currency> lovelyCurrencies;
 
 }

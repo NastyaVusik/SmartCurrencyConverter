@@ -1,1 +1,5 @@
-GET http://localhost:8080/user
+#GET http://localhost:8080/user
+
+#POST http://localhost:8080/user/registration
+
+POST http://localhost:8080/user/login

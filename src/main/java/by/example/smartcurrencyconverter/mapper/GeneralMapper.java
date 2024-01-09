@@ -1,5 +1,6 @@
 package by.example.smartcurrencyconverter.mapper;
 
+import by.example.smartcurrencyconverter.dto.userDTO.GetUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.LoginUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.RegistrationUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.UpdateUserDTO;
@@ -21,4 +22,8 @@ public interface GeneralMapper {
 
     User mapToUser(UpdateUserDTO updateUserDTO);
     UpdateUserDTO mapToUpdateUserDTO(User user);
+
+
+    User mapToUser(GetUserDTO getUserDTO);
+
 }
