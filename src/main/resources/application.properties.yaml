@@ -1,5 +1,10 @@
-#spring:
-#  docker:
-#    compose:
-#      enable: false
-#      file: compose.yaml
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5444/currency
+    username: postgres
+    password: root
