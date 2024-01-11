@@ -3,6 +3,7 @@ package by.example.smartcurrencyconverter.service;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,13 @@ public class CurrencyService {
     public Optional<Currency> findByShortName(String shortName) {
 
         return Optional.of(currencyRepository.findByShortName(shortName).orElseThrow());
+    }
+
+
+    @Transactional(readOnly = true)
+    public Optional<Currency> findByNameOrShortName(String name, String shortName){
+
+        return Optional.of(currencyRepository.findByNameOrShortName(name, shortName).orElseThrow());
     }
 
 }
