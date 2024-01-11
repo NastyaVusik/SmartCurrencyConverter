@@ -1,5 +1,6 @@
 package by.example.smartcurrencyconverter.service;
 
+import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
@@ -54,7 +54,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<User> findAll(){
-        return userRepository.findAll(Sort.by(Sort.Direction.ASC));     //?????????????????????????????????
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));     //?????????????????????????????????
     }
 
 
@@ -72,5 +72,15 @@ public class UserService {
     }
 
 
+    public Map<Long, Currency> getLovelyCurrencies(User user, Currency currency) {
+        Map<Long, Currency> lovelyCorencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+        int size = 6;
+
+        if (lovelyCorencies.size() < size) {
+            lovelyCorencies.put(user.getId(), currency);
+        }
+
+        return lovelyCorencies;
+    }
 
 }

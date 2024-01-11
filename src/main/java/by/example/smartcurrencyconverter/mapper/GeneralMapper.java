@@ -1,8 +1,11 @@
 package by.example.smartcurrencyconverter.mapper;
 
+import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
+import by.example.smartcurrencyconverter.dto.userDTO.GetUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.LoginUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.RegistrationUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.UpdateUserDTO;
+import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.entity.User;
 import org.mapstruct.Mapper;
 
@@ -21,4 +24,11 @@ public interface GeneralMapper {
 
     User mapToUser(UpdateUserDTO updateUserDTO);
     UpdateUserDTO mapToUpdateUserDTO(User user);
+
+
+    User mapToUser(GetUserDTO getUserDTO);
+
+
+    Currency mapToCurrency(ViewedCurrencyDTO viewedCurrencyDTO);
+
 }

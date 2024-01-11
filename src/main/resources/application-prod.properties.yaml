@@ -8,3 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5444/currency
     username: postgres
     password: root
+
+  banner:
+    location: classpath:/src/main/resources/banner.txt
