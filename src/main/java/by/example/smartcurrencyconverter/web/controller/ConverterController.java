@@ -2,8 +2,10 @@ package by.example.smartcurrencyconverter.web.controller;
 
 import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.LoginUserDTO;
+import by.example.smartcurrencyconverter.dto.userDTO.UpdateUserDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.entity.User;
+import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.ConverterService;
 import by.example.smartcurrencyconverter.service.CurrencyService;
 import by.example.smartcurrencyconverter.service.UserService;
@@ -25,20 +27,24 @@ public class ConverterController {
     private final UserService userService;
     private final CurrencyService currencyService;
     private final ConverterService converterService;
+    private final GeneralMapper generalMapper;
 
     @PostMapping("/currency={name}-amoumt")
-    public ResponseEntity<Double> getResults(@Validated @RequestParam(name = "userId") Long id, @RequestBody ViewedCurrencyDTO viewedCurrencyDTO,
+    public ResponseEntity<Double> getResults(@Validated @RequestBody UpdateUserDTO updateUserDTO, @RequestBody ViewedCurrencyDTO viewedCurrencyDTO,
                                              @PathVariable(name = "currencyName") String name, @PathVariable(name = "amount") Double amount){
 
-User user = userService.findById(id).orElseThrow();
-Currency fromCurrency = currencyService.findByName(viewedCurrencyDTO.getName()).orElseThrow();
-Currency toCurrency = currencyService.findByName(viewedCurrencyDTO.getName()).orElseThrow();
+User user = userService.findById(generalMapper.mapToUser(updateUserDTO).getId()).orElseThrow();
+Currency fromCurrency = currencyService.findByName(generalMapper.mapToCurrency(viewedCurrencyDTO).getName()).orElseThrow();
+Currency toCurrency = currencyService.findByName(generalMapper.mapToCurrency(viewedCurrencyDTO).getName()).orElseThrow();
 
 if(amount == 0){
     return new ResponseEntity<>(HttpStatus.valueOf("Enter amount more than null!"));
 }
 
 Double result = converterService.getResult(viewedCurrencyDTO, amount);
+
+user.getLovelyCurrencies().put(user.getId(), fromCurrency);
+user.getLovelyCurrencies().put(user.getId(), toCurrency);
 
 return ResponseEntity.ok(result);
 

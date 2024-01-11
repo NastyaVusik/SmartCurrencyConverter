@@ -52,9 +52,9 @@ public class userController {
 
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<User> update(@Validated @RequestBody UpdateUserDTO updateUserDTO, @RequestBody User user) {
+    public ResponseEntity<User> update(@Validated @RequestBody UpdateUserDTO updateUserDTO) {
 
-        user = userService.update(generalMapper.mapToUser(updateUserDTO));
+        User user = userService.update(generalMapper.mapToUser(updateUserDTO));
 
         return ResponseEntity.ok(user);
     }

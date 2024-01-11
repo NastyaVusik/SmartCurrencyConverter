@@ -53,6 +53,13 @@ public class CurrencyService {
     }
 
 
+    public Currency update(Currency currency){
+        currency = currencyRepository.findById(currency.getId()).orElseThrow();
+
+        return currencyRepository.save(currency);
+    }
+
+
     @Transactional(readOnly = true)
     public Optional<Currency> findByName(String name) {
 
