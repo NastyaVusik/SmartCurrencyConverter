@@ -7,13 +7,13 @@ import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/currency")
@@ -21,18 +21,26 @@ public class CurrencyController {
 
     private final CurrencyService currencyService;
     private final GeneralMapper generalMapper;
+    private final static Logger log = (Logger) LoggerFactory.getLogger(CurrencyController.class);
 
     @PostMapping("/create")
     public ResponseEntity<Currency> create(@RequestBody CreateCurrencyDTO createCurrencyDTO){
 
+        log.info("Save new currency:");
+
         Currency currency = currencyService.save(generalMapper.mapToCurrency(createCurrencyDTO));
+
+        log.info("New user's name is: "  + createCurrencyDTO.getName());
 
         return ResponseEntity.ok(currency);
     }
 
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<Currency> update(@RequestBody UpdateCurrencyDTO updateCurrencyDTO){
+    public ResponseEntity<Currency> update(@RequestBody UpdateCurrencyDTO updateCurrencyDTO,
+                                           @PathVariable(name = "currencyId") Long id){
+
+        log.info("Update old currency with id = " + id);
 
         Currency currency = currencyService.update(generalMapper.mapToCurrency(updateCurrencyDTO));
 
@@ -43,6 +51,9 @@ public class CurrencyController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Currency> deleteById(@PathVariable(name = "currencyId") Long id){
         if(currencyService.findById(id).isPresent()) {
+
+            log.info("Delete currency, because id = " + id + " was found.");
+
             currencyService.deleteById(id);
         }
 
@@ -51,8 +62,12 @@ public class CurrencyController {
     }
 
 
-    @GetMapping("/get")
-    public ResponseEntity<Currency> findById(@RequestBody GetCurrencyDTO getCurrencyDTO){
+    @GetMapping("{id}/get")
+    public ResponseEntity<Currency> findById(@RequestBody GetCurrencyDTO getCurrencyDTO,
+                                             @PathVariable(name = "currencyId") Long id){
+
+        log.info("Find currency by id = " + id);
+
         Currency currencyById = currencyService.findById(generalMapper.mapToCurrency(getCurrencyDTO).getId()).orElseThrow();
 
         return ResponseEntity.ok(currencyById);
@@ -62,7 +77,10 @@ public class CurrencyController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Currency>> findAll(){
+
         List<Currency> currencies = currencyService.findAll();
+
+        log.info("Find all currencies: " + currencies);
 
         return ResponseEntity.ok(currencies);
     }

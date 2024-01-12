@@ -1,10 +1,16 @@
 package by.example.smartcurrencyconverter.service;
 
+import by.example.smartcurrencyconverter.configuration.security.UserPrincipal;
 import by.example.smartcurrencyconverter.entity.Currency;
+import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +20,15 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     public User save(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add(Role.USER);
         user.setJoinedDate(LocalDate.now());
 
         return userRepository.save(user);
@@ -81,6 +90,30 @@ public class UserService {
         }
 
         return lovelyCorencies;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+
+        UserPrincipal userPrincipal = UserPrincipal.builder()
+                .name(user.getName())
+                .surname(user.getSurname())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .birthdayDate(user.getBirthdayDate())
+                .country(user.getCountry())
+                .roles(user.getRoles())
+                .build();
+
+        return userPrincipal;
+    }
+
+
+    public void assignRoleToUser(User user, Role role){
+        user.getRoles().add(role);
     }
 
 }

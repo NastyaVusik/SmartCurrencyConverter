@@ -17,7 +17,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final JwtTokenFilter jwtTokenFilter;
+    private final JwtTokenFilter JwtTokenFilter;
     private final static String H2_URL_PATERN = "/h2/*";
 
 
@@ -37,7 +37,7 @@ public class SecurityConfiguration {
               )
                 .formLogin(form -> form.loginPage("/login").permitAll())
                 .logout(logout -> logout.permitAll())
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(JwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.csrf(csfrConfigurer -> csfrConfigurer.ignoringRequestMatchers(myMatcher));
 
