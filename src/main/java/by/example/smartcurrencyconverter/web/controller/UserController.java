@@ -7,8 +7,7 @@ import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -23,7 +23,8 @@ public class UserController {
 
     private final UserService userService;
     private final GeneralMapper generalMapper;
-    private final static Logger log = (Logger) LoggerFactory.getLogger(UserController.class);
+    //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
+
 
     @PostMapping("/registration")
     public ResponseEntity<User> registration(@Validated @RequestBody RegistrationUserDTO registrationUserDTO) {

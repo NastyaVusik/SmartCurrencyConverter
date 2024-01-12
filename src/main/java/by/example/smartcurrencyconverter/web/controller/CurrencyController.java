@@ -7,13 +7,13 @@ import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/currency")
@@ -21,7 +21,8 @@ public class CurrencyController {
 
     private final CurrencyService currencyService;
     private final GeneralMapper generalMapper;
-    private final static Logger log = (Logger) LoggerFactory.getLogger(CurrencyController.class);
+//    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
+
 
     @PostMapping("/create")
     public ResponseEntity<Currency> create(@RequestBody CreateCurrencyDTO createCurrencyDTO){

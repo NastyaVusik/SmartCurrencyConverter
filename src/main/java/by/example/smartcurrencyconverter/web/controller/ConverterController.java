@@ -9,14 +9,13 @@ import by.example.smartcurrencyconverter.service.ConverterService;
 import by.example.smartcurrencyconverter.service.CurrencyService;
 import by.example.smartcurrencyconverter.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/converter")
@@ -26,7 +25,7 @@ public class ConverterController {
     private final CurrencyService currencyService;
     private final ConverterService converterService;
     private final GeneralMapper generalMapper;
-    private final static Logger log = (Logger) LoggerFactory.getLogger(ConverterController.class);
+//    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 
     @PostMapping("/currency={name}-amoumt")
     public ResponseEntity<Double> getResults(@Validated @RequestBody UpdateUserDTO updateUserDTO, @RequestBody ViewedCurrencyDTO viewedCurrencyDTO,
