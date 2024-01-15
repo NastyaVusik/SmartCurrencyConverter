@@ -1,19 +1,31 @@
 package by.example.smartcurrencyconverter.web.controller;
 
+import by.example.smartcurrencyconverter.configuration.security.JwtTokenProvider;
+import by.example.smartcurrencyconverter.configuration.security.UserPrincipal;
+import by.example.smartcurrencyconverter.dto.userDTO.GetUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.LoginUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.RegistrationUserDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.UpdateUserDTO;
+import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -23,11 +35,26 @@ public class UserController {
 
     private final UserService userService;
     private final GeneralMapper generalMapper;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final BCryptPasswordEncoder passwordEncoder;
     //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 
 
+    @GetMapping("/registration")
+    public ModelAndView registration(Model model) {
+        model.addAttribute("registrationUserDTO", new RegistrationUserDTO());
+//        return "user-registration";
+
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("user-registration.html");
+
+        return modelAndView;
+    }
+
+
+
     @PostMapping("/registration")
-    public ResponseEntity<User> registration(@Validated @RequestBody RegistrationUserDTO registrationUserDTO) {
+    public String registration(@ModelAttribute("registrationUserDTO") RegistrationUserDTO registrationUserDTO) {
 
         User user = userService.save(generalMapper.mapToUser(registrationUserDTO));
 
@@ -37,28 +64,34 @@ public class UserController {
 
         log.info("User was saved in " + user.getJoinedDate());
 
-        return ResponseEntity.ok(user);
+        // Redirect to the login page
+        return "redirect:/user/login";
+    }
+
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("loginUserDTO", new LoginUserDTO());
+        return "user-login";
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@Validated @RequestBody LoginUserDTO loginUserDTO) {
+    public ResponseEntity<String> login( @ModelAttribute("loginUserDTO") LoginUserDTO loginUserDTO) {
 
         log.info("Find user in database with username: " + loginUserDTO.getUsername());
 
-        //Code with sequrity will be here
-        Optional<User> userByUsername = userService.findByUsername(loginUserDTO.getUsername());
-        if (userByUsername.isPresent()) {
+        UserPrincipal userPrincipal = (UserPrincipal) userService.loadUserByUsername(loginUserDTO.getUsername());
 
-            log.info("User with username " + userByUsername.get().getUsername() + " was found.");
-            log.info("Check user password.");
+        if(passwordEncoder.matches(loginUserDTO.getPassword(), userPrincipal.getPassword())){
+            Set<Role> roles = (Set<Role>) userPrincipal.getAuthorities();
+            generalMapper.mapToUser(loginUserDTO).setLastVisitDate(LocalDate.now());
 
-            if (loginUserDTO.getUsername().equals(userByUsername.get().getPassword())) {
+            String token = jwtTokenProvider.generateToken(userPrincipal.getUsername(), userPrincipal.getPassword(), roles);
 
-               log.info("Login was completed. User id = " + userByUsername.get().getId());
+            log.info("Login was completed. User's name is " + userPrincipal.getName());
 
-                return ResponseEntity.ok(userByUsername.get());
-            }
+            return ResponseEntity.ok(token);
         }
 
         log.info("Username " + loginUserDTO.getUsername() + " or password is wrong.");
@@ -93,6 +126,18 @@ public class UserController {
         return ResponseEntity.ok().build();
 
     }
+
+
+//    @GetMapping("/{id}/logout")
+//    public String logout(@PathVariable(name = "userId") Long id, @Validated GetUserDTO getUserDTO){
+//
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if(auth != null){
+//            new SecurityContextLogoutHandler().;
+//        }
+//        return "redirect:home";
+//    }
+
 
 
 }

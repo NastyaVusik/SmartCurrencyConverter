@@ -59,4 +59,8 @@ public class User {
     @ManyToMany
     private Map<Long, Currency> lovelyCurrencies;
 
+    @Column(name = "last_visit_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
+    private LocalDate lastVisitDate;
+
 }

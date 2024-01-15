@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -43,10 +44,11 @@ public class RegistrationUserDTO {
 
  @NotBlank
  @NotEmpty
+ @DateTimeFormat(pattern = "dd-MM-yyyy")
  private LocalDate birthdayDate;
 
- @NotBlank
- @NotEmpty
+@NotBlank
+@NotEmpty
  private Set<Country> country;
 
 }

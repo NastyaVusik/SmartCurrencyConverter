@@ -28,6 +28,10 @@ public class UserService implements UserDetailsService {
 
     public User save(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRoles()==null)
+        {
+            user.setRoles(new HashSet<>());
+        }
         user.getRoles().add(Role.USER);
         user.setJoinedDate(LocalDate.now());
 
