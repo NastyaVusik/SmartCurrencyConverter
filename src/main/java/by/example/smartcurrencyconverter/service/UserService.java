@@ -6,6 +6,8 @@ import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.logging.log4j.core.net.Priority;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -97,15 +99,15 @@ public class UserService implements UserDetailsService {
 //    }
 
 
-    public PriorityQueue<Currency> addToLovelyCurrencies(User user, Currency fromCurrency, Currency toCurrency) {
-        PriorityQueue<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
-        int limit = 6;
+    public Set<Currency> addToLovelyCurrencies(User user, Currency fromCurrency, Currency toCurrency) {
+        Set<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+        int limit = 4;
 
-        while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
-            lovelyCurrencies.poll();
-            lovelyCurrencies.offer(fromCurrency);
-            lovelyCurrencies.offer(toCurrency);
-        }
+         while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
+             lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
+             lovelyCurrencies.add(fromCurrency);
+             lovelyCurrencies.add(toCurrency);
+         }
 
         return lovelyCurrencies;
     }

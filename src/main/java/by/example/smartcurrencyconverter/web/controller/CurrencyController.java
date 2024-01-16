@@ -2,6 +2,7 @@ package by.example.smartcurrencyconverter.web.controller;
 
 import by.example.smartcurrencyconverter.dto.currencyDTO.CreateCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.GetCurrencyDTO;
+import by.example.smartcurrencyconverter.dto.currencyDTO.RestCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.UpdateCurrencyDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Slf4j
@@ -24,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CurrencyController {
 
     private final CurrencyService currencyService;
+
     private final GeneralMapper generalMapper;
 //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 
@@ -88,5 +88,15 @@ public class CurrencyController {
 
         return ResponseEntity.ok(currencies);
     }
+
+    @GetMapping("/obtain")
+    public String obtain(){
+
+        log.info("Obtain currency by name = ");
+
+        List<RestCurrencyDTO> Data = currencyService.getCurrencies();
+        return Data.toString();
+    }
+    
 
 }

@@ -57,9 +57,12 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private LocalDate joinedDate;
 
+    // lovely currencies
     @ManyToMany
-//    private Map<Long, Currency> lovelyCurrencies;
-    private PriorityQueue<Currency> lovelyCurrencies;
+    @JoinTable(name = "tb_user_currency",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "currency_id"))
+    private Set<Currency> lovelyCurrencies;
 
     @Column(name = "last_visit_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
