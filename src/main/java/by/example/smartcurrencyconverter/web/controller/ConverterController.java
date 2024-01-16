@@ -47,11 +47,12 @@ public class ConverterController {
         log.info("After entering amount");
         log.info("Before saving currency in lovely list");
 
-        user.getLovelyCurrencies().put(user.getId(), fromCurrency);
-        user.getLovelyCurrencies().put(user.getId(), toCurrency);
+//        user.getLovelyCurrencies().put(user.getId(), fromCurrency);
+//        user.getLovelyCurrencies().put(user.getId(), toCurrency);
+
+        userService.addToLovelyCurrencies(user, fromCurrency, toCurrency);
 
         log.info("After saving currency in lovely list");
-
 
         return ResponseEntity.ok(result);
 

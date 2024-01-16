@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 @Entity
@@ -57,7 +58,8 @@ public class User {
     private LocalDate joinedDate;
 
     @ManyToMany
-    private Map<Long, Currency> lovelyCurrencies;
+//    private Map<Long, Currency> lovelyCurrencies;
+    private PriorityQueue<Currency> lovelyCurrencies;
 
     @Column(name = "last_visit_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")

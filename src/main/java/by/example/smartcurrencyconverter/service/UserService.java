@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
 
 
     public void deleteById(Long id){
-        userRepository.findById(id).orElseThrow(RuntimeException::new);     //????????????????????????????????
+        userRepository.findById(id).orElseThrow(RuntimeException::new);
 
         userRepository.deleteById(id);
 
@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public List<User> findAll(){
-        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));     //?????????????????????????????????
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));
     }
 
 
@@ -85,16 +85,31 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Map<Long, Currency> getLovelyCurrencies(User user, Currency currency) {
-        Map<Long, Currency> lovelyCorencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
-        int size = 6;
+//    public Map<Long, Currency> getLovelyCurrencies(User user, Currency currency) {
+//        Map<Long, Currency> lovelyCorencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+//        int size = 6;
+//
+//        if (lovelyCorencies.size() < size) {
+//            lovelyCorencies.put(user.getId(), currency);
+//        }
+//
+//        return lovelyCorencies;
+//    }
 
-        if (lovelyCorencies.size() < size) {
-            lovelyCorencies.put(user.getId(), currency);
+
+    public PriorityQueue<Currency> addToLovelyCurrencies(User user, Currency fromCurrency, Currency toCurrency) {
+        PriorityQueue<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+        int limit = 6;
+
+        while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
+            lovelyCurrencies.poll();
+            lovelyCurrencies.offer(fromCurrency);
+            lovelyCurrencies.offer(toCurrency);
         }
 
-        return lovelyCorencies;
+        return lovelyCurrencies;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
