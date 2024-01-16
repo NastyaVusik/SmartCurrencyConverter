@@ -31,25 +31,28 @@ public class SecurityConfiguration {
         RequestMatcher myMatcher = new AntPathRequestMatcher(H2_URL_PATTERN);
         httpSecurity
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(mvcMatcherBuilder.pattern("/registration")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/user/registration")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/user/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/user/signin")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/converter")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/css/*")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/navbar/*")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
                         .requestMatchers(myMatcher).authenticated()
-                        .anyRequest().permitAll()
-              )
-                .formLogin(Customizer.withDefaults())
+                        .anyRequest().authenticated()
+                        )
+                .addFilterBefore(JwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin((form) -> form.loginPage("/user/login")
-                        .loginProcessingUrl("/user/login")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/")
+                        .logoutUrl("/user/logout")
                         .permitAll())
-                .addFilterBefore(JwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        httpSecurity.csrf(csrfConfigurer ->
-                csrfConfigurer.ignoringRequestMatchers(myMatcher));
-//        httpSecurity.csrf().disable();
+
+   
+
 
 return httpSecurity.build();
 

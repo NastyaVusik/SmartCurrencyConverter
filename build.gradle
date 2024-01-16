@@ -47,7 +47,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+        implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'javax.xml.bind:jaxb-api:2.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
 //**    implementation 'org.springframework.boot:spring-boot-starter-web-services'
 //*    implementation 'org.flywaydb:flyway-core'
 //*    implementation 'org.liquibase:liquibase-core'

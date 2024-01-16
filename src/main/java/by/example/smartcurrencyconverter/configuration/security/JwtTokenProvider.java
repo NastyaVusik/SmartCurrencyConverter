@@ -1,8 +1,10 @@
 package by.example.smartcurrencyconverter.configuration.security;
 
+
 import by.example.smartcurrencyconverter.entity.Role;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -48,7 +50,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserPrincipal userPrincipal = new UserPrincipal();
-
+        
         userPrincipal.setUsername(getUserUsernameFromJWT(token));
         userPrincipal.setPassword(getUserPasswordFromJWT(token));
         userPrincipal.setRoles(getUserRolesFromJWT(token));
@@ -70,11 +72,24 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+        String t = null;
+        if(req.getCookies()!=null)
+        {
+            Cookie[]rc =req.getCookies();
+			System.out.println("rc = " + rc);
+            for(int i=0;i<rc.length;i++)
+            {
+                System.out.println(rc[i].getName());
+                if(rc[i].getName().equals("token")==true)
+                {
+					
+                t = rc[i].getValue().toString();
+                }
+            }
         }
-        return null;
+		
+        return t;
+
     }
 
     @SneakyThrows

@@ -10,8 +10,13 @@ import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +31,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 @Slf4j
 @RestController
@@ -54,7 +62,7 @@ public class UserController {
 
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("registrationUserDTO") RegistrationUserDTO registrationUserDTO) {
+    public ModelAndView registration(@ModelAttribute("registrationUserDTO") RegistrationUserDTO registrationUserDTO) {
 
         User user = userService.save(generalMapper.mapToUser(registrationUserDTO));
 
@@ -65,19 +73,21 @@ public class UserController {
         log.info("User was saved in " + user.getJoinedDate());
 
         // Redirect to the login page
-        return "redirect:/user/login";
+        return new ModelAndView("redirect:/user/login");
     }
 
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public ModelAndView login(Model model) {
         model.addAttribute("loginUserDTO", new LoginUserDTO());
-        return "user-login";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user-login.html");
+        return modelAndView;
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login( @ModelAttribute("loginUserDTO") LoginUserDTO loginUserDTO) {
+    @PostMapping("/signin")
+    public ModelAndView login( @ModelAttribute("loginUserDTO") LoginUserDTO loginUserDTO, HttpServletResponse res) {
 
         log.info("Find user in database with username: " + loginUserDTO.getUsername());
 
@@ -90,14 +100,20 @@ public class UserController {
             String token = jwtTokenProvider.generateToken(userPrincipal.getUsername(), userPrincipal.getPassword(), roles);
 
             log.info("Login was completed. User's name is " + userPrincipal.getName());
-
-            return ResponseEntity.ok(token);
+            Authentication token1 = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(token1);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(60 * 60 * 24 * 365);
+            cookie.setPath("/");
+            
+            res.addCookie(cookie);
+            return new ModelAndView("redirect:/");
         }
 
         log.info("Username " + loginUserDTO.getUsername() + " or password is wrong.");
 
-        return ResponseEntity.badRequest().build();
-
+        return new ModelAndView("redirect:/user/login");
     }
 
 
@@ -127,7 +143,22 @@ public class UserController {
 
     }
 
+    @GetMapping("/logout")
+    public ModelAndView logout( HttpServletResponse res, HttpServletRequest req){
 
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null)
+            {
+                new SecurityContextLogoutHandler().logout(req, res, auth);
+                Cookie cookie = new Cookie("token", null);
+                cookie.setHttpOnly(true);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                res.addCookie(cookie);
+            }
+        return new ModelAndView("redirect:/");
+    }
+    
 //    @GetMapping("/{id}/logout")
 //    public String logout(@PathVariable(name = "userId") Long id, @Validated GetUserDTO getUserDTO){
 //

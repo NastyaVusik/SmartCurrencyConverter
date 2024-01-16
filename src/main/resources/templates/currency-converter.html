@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Currency-converter</title>
+    <title>Currency converter</title>
+    <th:block th:insert="~{head :: head}"></th:block>
 </head>
 <body>
-
+<!-- draw navbar -->
+<div th:replace="~{navbar :: header}"></div>
+<div>
+    <h1>Currency converter</h1>
+</div>
 </body>
 </html>

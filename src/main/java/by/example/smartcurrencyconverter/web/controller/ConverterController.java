@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @RestController
@@ -54,5 +55,12 @@ public class ConverterController {
 
         return ResponseEntity.ok(result);
 
+    }
+
+    @GetMapping("/")
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("currency-converter.html");
+        return modelAndView;
     }
 }
