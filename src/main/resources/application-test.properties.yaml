@@ -18,3 +18,13 @@ logging:
 
     banner:
       location: classpath:/src/main/resources/banner.txt
+
+  thymeleaf:
+    prefix:
+      classpath:
+        templates:
+          suffix: .html
+          prefix: classpath:/templates/
+
+
+

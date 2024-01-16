@@ -8,3 +8,10 @@ spring:
     url: jdbc:postgresql://localhost:5444/currency
     username: postgres
     password: root
+
+  thymeleaf:
+    prefix:
+      classpath:
+      templates:
+       suffix: .html
+       prefix: classpath:/templates/

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>user-registration</title>
+    <th:block th:insert="~{head :: head}"></th:block>
+</head>
+<body>
+<div th:insert="~{navbar :: header}"></div>
+
+<div class="container">
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6 ">
+            <h2>Fill registration form, please:</h2>
+            <form action="#" th:action="@{/user/registration}" th:object="${registrationUserDTO}" method="post" role="form">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" th:field="*{name}" id="name" placeholder="Name" class="form-control">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger"></span>
+                
+                <label for="surname" class="form-label">Surname</label>
+                <input type="text" th:field="*{surname}" id="surname" placeholder="Surname" class="form-control">
+                <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="form-text text-danger"></span>
+
+                <label for="username" class="form-label">Username</label>
+                <input type="text" th:field="*{username}" id="username" placeholder="Username" class="form-control">
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="form-text text-danger"></span>
+
+                <label for="password" class="form-label">Password</label>
+                <input type="text" th:field="*{password}" id="password" placeholder="Password" class="form-control">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger"></span>
+
+                <label for="email" class="form-label">Email</label>
+                <input type="text" th:field="*{email}" id="email" placeholder="Email" class="form-control">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text text-danger"></span>
+
+                <label for="birthdayDate" class="form-label">BirthdayDate</label>
+                <input type="text" th:field="*{birthdayDate}" id="birthdayDate" placeholder="Birthday date" class="form-control">
+                <span th:if="${#fields.hasErrors('birthdayDate')}" th:errors="*{birthdayDate}" class="form-text text-danger"></span>
+
+                <label for="country" class="form-label">Country</label>
+                <input type="text" th:field="*{country}" id="country" placeholder="Country" class="form-control">
+                <span th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="form-text text-danger"></span>
+
+                <button type="submit" class="btn btn-primary mt-3">Register</button>
+                
+            </form>
+        </div>
+    </div>
+</body>
+</html>

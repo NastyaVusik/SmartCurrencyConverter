@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Navbar</title>
+</head>
+
+<body>
+<div th:class="topnav"  th:fragment="header">
+ 
+    <a th:class="active" th:href="@{/}">Home</a>
+    <a th:if="${principal == null}" th:href="@{/user/login}">Login</a>
+    <a th:if="${principal == null}" th:href="@{/user/registration}">Registration</a>
+    <a th:href="@{/converter/}">Converter</a>
+    <div th:if="${principal != null}">
+        <a th:href="@{/user/logout}">Logout</a>
+    </div>
+    
+</div>
+</body>
+</html>

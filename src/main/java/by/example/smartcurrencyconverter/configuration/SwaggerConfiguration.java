@@ -1,4 +1,4 @@
-package by.example.smartcurrencyconverter.configuration.security;
+package by.example.smartcurrencyconverter.configuration;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>user-login</title>
+    <th:block th:insert="~{head :: head}"></th:block>
+</head>
+<body>
+<!-- draw navbar -->
+<div th:replace="~{navbar :: header}"></div>
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/user/signin}" th:object="${loginUserDTO}" method="post" role="form">
+                <h2>Login, please:</h2>
+                <label for="username" class="form-label">Username</label>
+                <input type="text" th:field="*{username}" id="username" placeholder="Username" class="form-control">
+                <span th:if="${#fields.hasErrors('username')}" th:error="*{username}" class="form-text text-danger"></span>
+
+                <label for="password" class="form-label">Password</label>
+                <input type="text" th:field="*{password}" id="password" placeholder="Password" class="form-control">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger"></span>
+
+                <button type="submit" class="btn btn-primary mt-3">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
