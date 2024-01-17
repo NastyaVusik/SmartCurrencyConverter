@@ -1,6 +1,5 @@
 package by.example.smartcurrencyconverter.mapper;
 
-import by.example.smartcurrencyconverter.dto.currencyDTO.CreateCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.GetCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.UpdateCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
@@ -37,9 +36,6 @@ public interface GeneralMapper {
 
     Currency mapToCurrency(UpdateCurrencyDTO updateCurrencyDTO);
 
-
-    Currency mapToCurrency(CreateCurrencyDTO createCurrencyDTO);
-    CreateCurrencyDTO mapToCreateCurrencyDTO(Currency currency);
 
 
     Currency mapToCurrency(GetCurrencyDTO getCurrencyDTO);

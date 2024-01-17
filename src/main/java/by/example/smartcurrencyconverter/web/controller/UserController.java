@@ -51,7 +51,6 @@ public class UserController {
     @GetMapping("/registration")
     public ModelAndView registration(Model model) {
         model.addAttribute("registrationUserDTO", new RegistrationUserDTO());
-//        return "user-registration";
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("user-registration.html");

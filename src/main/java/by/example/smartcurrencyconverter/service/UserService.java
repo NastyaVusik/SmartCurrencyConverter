@@ -6,6 +6,8 @@ import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.logging.log4j.core.net.Priority;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,7 +43,7 @@ public class UserService implements UserDetailsService {
 
 
     public void deleteById(Long id){
-        userRepository.findById(id).orElseThrow(RuntimeException::new);     //????????????????????????????????
+        userRepository.findById(id).orElseThrow(RuntimeException::new);
 
         userRepository.deleteById(id);
 
@@ -67,7 +69,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public List<User> findAll(){
-        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));     //?????????????????????????????????
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));
     }
 
 
@@ -85,16 +87,32 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Map<Long, Currency> getLovelyCurrencies(User user, Currency currency) {
-        Map<Long, Currency> lovelyCorencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
-        int size = 6;
+//    public Map<Long, Currency> getLovelyCurrencies(User user, Currency currency) {
+//        Map<Long, Currency> lovelyCorencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+//        int size = 6;
+//
+//        if (lovelyCorencies.size() < size) {
+//            lovelyCorencies.put(user.getId(), currency);
+//        }
+//
+//        return lovelyCorencies;
+//    }
 
-        if (lovelyCorencies.size() < size) {
-            lovelyCorencies.put(user.getId(), currency);
-        }
 
-        return lovelyCorencies;
+    public Set<Currency> addToLovelyCurrencies(User user, Currency fromCurrency, Currency toCurrency) {
+        Set<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
+        int limit = 6;
+
+         while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
+             lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
+             lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
+             lovelyCurrencies.add(fromCurrency);
+             lovelyCurrencies.add(toCurrency);
+         }
+
+        return lovelyCurrencies;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
