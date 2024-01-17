@@ -1,5 +1,6 @@
 package by.example.smartcurrencyconverter.web.controller;
 
+import by.example.smartcurrencyconverter.dto.currencyDTO.ConverterCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.userDTO.UpdateUserDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
@@ -10,6 +11,9 @@ import by.example.smartcurrencyconverter.service.CurrencyService;
 import by.example.smartcurrencyconverter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -61,7 +65,13 @@ public class ConverterController {
     @GetMapping("/")
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
+        List<ConverterCurrencyDTO> currencies = currencyService.getCurrencies();
         modelAndView.setViewName("currency-converter.html");
+        modelAndView.addObject("currencies", currencies);
+        modelAndView.addObject("fromCurrency", currencies.get(0));
+        modelAndView.addObject("toCurrency", currencies.get(1));
         return modelAndView;
     }
+
+    
 }

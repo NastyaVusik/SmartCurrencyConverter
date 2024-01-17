@@ -1,9 +1,9 @@
 package by.example.smartcurrencyconverter.web.controller;
 
-import by.example.smartcurrencyconverter.dto.currencyDTO.CreateCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.GetCurrencyDTO;
-import by.example.smartcurrencyconverter.dto.currencyDTO.RestCurrencyDTO;
+import by.example.smartcurrencyconverter.dto.currencyDTO.ConverterCurrencyDTO;
 import by.example.smartcurrencyconverter.dto.currencyDTO.UpdateCurrencyDTO;
+import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.CurrencyService;
@@ -28,13 +28,13 @@ public class CurrencyController {
 //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 
     @PostMapping("/create")
-    public ResponseEntity<Currency> create(@RequestBody CreateCurrencyDTO createCurrencyDTO){
+    public ResponseEntity<Currency> create(@RequestBody ViewedCurrencyDTO viewedCurrencyDTO){
 
         log.info("Save new currency:");
 
-        Currency currency = currencyService.save(generalMapper.mapToCurrency(createCurrencyDTO));
+        Currency currency = currencyService.save(generalMapper.mapToCurrency(viewedCurrencyDTO));
 
-        log.info("New user's name is: "  + createCurrencyDTO.getName());
+        log.info("New user's name is: "  + viewedCurrencyDTO.getName());
 
         return ResponseEntity.ok(currency);
     }
@@ -94,7 +94,7 @@ public class CurrencyController {
 
         log.info("Obtain currency by name = ");
 
-        List<RestCurrencyDTO> Data = currencyService.getCurrencies();
+        List<ConverterCurrencyDTO> Data = currencyService.getCurrencies();
         return Data.toString();
     }
     

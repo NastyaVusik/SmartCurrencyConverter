@@ -11,5 +11,43 @@
 <div>
     <h1>Currency converter</h1>
 </div>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/currency={name}-amoumt}" th:object="${currencies}" method="post"
+                  role="form">
+
+                <div class="form-group" th:object="${fromCurrency}">
+
+                        <select class="form-select" aria-label="Default select example" id="from">
+                            <option selected th:text="*{name}"></option>
+                            <option th:each="currency : ${currencies}" th:value="${currency.name}"
+                                    th:text="${currency.name}"></option>
+                        </select>
+
+
+                    <input type="text" th:field="*{amount}" id="amountFrom" placeholder="Amount" class="form-control">
+                    <span th:if="${#fields.hasErrors('amount')}" th:errors="*{name}" class="form-text text-danger"></span>
+                </div>
+
+                <div class="form-group" th:object="${toCurrency}">
+
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected th:text="*{name}"></option>
+                            <option th:each="currency : ${currencies}" th:value="${currency.name}"
+                                    th:text="${currency.name}"></option>
+                        </select>
+
+                    <input type="text" th:field="*{amount}" id="amountTo" placeholder="Amount" class="form-control">
+                    <span th:if="${#fields.hasErrors('amount')}" th:errors="*{name}" class="form-text text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Convert</button>
+
+
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

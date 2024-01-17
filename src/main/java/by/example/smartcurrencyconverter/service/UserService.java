@@ -101,9 +101,10 @@ public class UserService implements UserDetailsService {
 
     public Set<Currency> addToLovelyCurrencies(User user, Currency fromCurrency, Currency toCurrency) {
         Set<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
-        int limit = 4;
+        int limit = 6;
 
          while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
+             lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
              lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
              lovelyCurrencies.add(fromCurrency);
              lovelyCurrencies.add(toCurrency);

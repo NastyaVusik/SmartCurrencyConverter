@@ -1,6 +1,6 @@
 package by.example.smartcurrencyconverter.service;
 
-import by.example.smartcurrencyconverter.dto.currencyDTO.RestCurrencyDTO;
+import by.example.smartcurrencyconverter.dto.currencyDTO.ConverterCurrencyDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
@@ -347,7 +347,7 @@ public class CurrencyService {
 
 
     // theUrl=https://api.nbrb.by/exrates/rates?periodicity=0
-    public List<RestCurrencyDTO> getCurrencies() {
+    public List<ConverterCurrencyDTO> getCurrencies() {
         System.out.println(apiUrl);
 
         // //make get request and print response
@@ -359,10 +359,10 @@ public class CurrencyService {
         // System.out.println(restCurrencyDto);
         // return restCurrencyDto.getBody();
 
-        ResponseEntity<RestCurrencyDTO[]> responseEntity = restTemplate.getForEntity(apiUrl, RestCurrencyDTO[].class);
+        ResponseEntity<ConverterCurrencyDTO[]> responseEntity = restTemplate.getForEntity(apiUrl, ConverterCurrencyDTO[].class);
         Object[] objects = responseEntity.getBody();
 //        System.out.println(objects[0]);
-        return List.of((RestCurrencyDTO[]) objects);
+        return List.of((ConverterCurrencyDTO[]) objects);
     }
 
 }
