@@ -103,7 +103,12 @@ public class UserService implements UserDetailsService {
         Set<Currency> lovelyCurrencies = userRepository.findById(user.getId()).get().getLovelyCurrencies();
         int limit = 6;
 
-         while ((!lovelyCurrencies.isEmpty()) & (lovelyCurrencies.size() < limit)) {
+        if(lovelyCurrencies.size() <= (limit - 2)){
+            lovelyCurrencies.add(fromCurrency);
+            lovelyCurrencies.add(toCurrency);
+        }
+
+         if (lovelyCurrencies.size() == limit) {
              lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
              lovelyCurrencies.remove(lovelyCurrencies.stream().iterator().next());
              lovelyCurrencies.add(fromCurrency);
@@ -115,6 +120,7 @@ public class UserService implements UserDetailsService {
 
 
     @Override
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username).orElseThrow();

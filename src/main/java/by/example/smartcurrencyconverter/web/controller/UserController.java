@@ -10,6 +10,8 @@ import by.example.smartcurrencyconverter.entity.Role;
 import by.example.smartcurrencyconverter.entity.User;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.UserService;
+import by.example.smartcurrencyconverter.service.emailService.DefaultEmailService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,6 +47,7 @@ public class UserController {
     private final GeneralMapper generalMapper;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final DefaultEmailService defaultEmailService;
     //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 
 
@@ -70,6 +73,13 @@ public class UserController {
         user.setJoinedDate(LocalDate.now());
 
         log.info("User was saved in " + user.getJoinedDate());
+        log.info("Send email to address: " + user.getEmail());
+
+        try {
+            defaultEmailService.sendSimpleEmail(new RegistrationUserDTO());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
         // Redirect to the login page
         return new ModelAndView("redirect:/user/login");
@@ -99,6 +109,7 @@ public class UserController {
             String token = jwtTokenProvider.generateToken(userPrincipal.getUsername(), userPrincipal.getPassword(), roles);
 
             log.info("Login was completed. User's name is " + userPrincipal.getName());
+
             Authentication token1 = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(token1);
             Cookie cookie = new Cookie("token", token);

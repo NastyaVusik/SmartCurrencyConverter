@@ -7,6 +7,7 @@ import by.example.smartcurrencyconverter.dto.currencyDTO.ViewedCurrencyDTO;
 import by.example.smartcurrencyconverter.entity.Currency;
 import by.example.smartcurrencyconverter.mapper.GeneralMapper;
 import by.example.smartcurrencyconverter.service.CurrencyService;
+import by.example.smartcurrencyconverter.service.emailService.DefaultEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CurrencyController {
 
     private final CurrencyService currencyService;
-
     private final GeneralMapper generalMapper;
 //    private final static org.slf4j.Logger log = LoggerFactory.getLogger(ConverterController.class);
 

@@ -346,22 +346,13 @@ public class CurrencyService {
 
 
 
-    // theUrl=https://api.nbrb.by/exrates/rates?periodicity=0
+    // url=https://api.nbrb.by/exrates/rates?periodicity=0
     public List<ConverterCurrencyDTO> getCurrencies() {
-        System.out.println(apiUrl);
-
-        // //make get request and print response
-        // String response = restTemplate.getForObject(apiUrl, String.class);
-        // System.out.println(response);
-        // ResponseEntity<List<RestCurrencyDto>> restCurrencyDto = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
-        //         new ParameterizedTypeReference<List<RestCurrencyDto>>() {
-        //         });
-        // System.out.println(restCurrencyDto);
-        // return restCurrencyDto.getBody();
+//        System.out.println(apiUrl);
 
         ResponseEntity<ConverterCurrencyDTO[]> responseEntity = restTemplate.getForEntity(apiUrl, ConverterCurrencyDTO[].class);
         Object[] objects = responseEntity.getBody();
-//        System.out.println(objects[0]);
+
         return List.of((ConverterCurrencyDTO[]) objects);
     }
 

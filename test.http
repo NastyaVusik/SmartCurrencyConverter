@@ -9,6 +9,9 @@ Content-Type: application/json
   "name": "Tom",
   "surname": "Smith",
   "username": "tom1",
-  "password": "Test123$"
+  "password": "Test123$",
+  "email": "tom@mail.ru",
+  "birthdayDate": "12-12-2000",
+  "country": "Belarus"
 
 }
