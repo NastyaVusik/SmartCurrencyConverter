@@ -43,6 +43,5 @@ public class ConverterCurrencyDTO {
     private Double officialRate;
 
     private Double amount;
-    
 
 }
