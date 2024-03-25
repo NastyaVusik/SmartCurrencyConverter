@@ -1,3 +1,6 @@
 databaseChangeLog:
   - include:
-      file: classpath:/db/changelog/changes/001-test.sql
+      file: classpath:/db/changelog/changes/001-initial-schema.sql
+  - include:
+      file: classpath:/db/changelog/changes/002-change-username.sql
+
